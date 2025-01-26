@@ -159,3 +159,97 @@ select issued_emp_id, count(*) as no_of_books_issued from issued_status
 
 -- Insight - There are 9 employees who have issued more then 1 book.
 ```
+
+
+Task 6: Create Summary Tables**: Used CTAS to generate new tables based on query results - each book and total book_issued_cnt
+
+```sql
+create table book_cnts as 
+select 
+b.book_title,b.isbn, count(i.issued_date) as book_issued_count
+from books b join 
+issued_status i on b.isbn = i.issued_book_isbn group by b.book_title,b.isbn order by count(i.issued_date) desc;
+
+select  * from book_cnts;  -- The table we have created via CTAS can be accessed. 
+```
+
+Task 7. Retrieve All Books in a Specific Category:
+Objective:- Find the books from category " Classic"
+
+```sql
+select * from books where category='Classic';
+
+-- Insight- There are 9 books in Classic category.
+```
+
+Task 8: Find Total Rental Income by Category:
+
+```sql
+select b.category,sum( b.rental_price) as total_rental
+	from 
+books b join issued_status i on b.isbn = i.issued_book_isbn group by b.category order by sum( b.rental_price) desc;
+
+-- Insight:- Max rental income was generated from "Classic" category books
+```
+
+Task 9 
+List Members Who Registered in the Last 180 Days
+
+- *Considering todays date is August 23,2024*
+*In this project instead of current date , we have used date as August 23,2024 as this project was completed 3 days of time interval and to get the same result we have used current date as  August 23,2024*
+
+```sql
+select * from members where reg_date> (to_date('2024-08-23','YYYY-MM-DD') - INTERVAL '6 month');
+-- Insight- There are only 2 customers who registered in last 180 days(6 months)
+```
+
+Task 10: 
+List Employees with their branch ID and  and their branch details
+
+```sql 
+select 
+	e.emp_id,e.emp_name,b.branch_id,b.manager_id, b.branch_address, b.contact_no, e1.emp_name as manager_name, 
+ e1.position
+	from 
+employees e join branch b on e.branch_id = b.branch_id
+join employees e1 
+on b.manager_id=e1.emp_id
+```
+
+Task 11
+Create a Table of Books with Rental Price Above 7 USD
+
+```sql
+
+create table books_price_above_7 as 
+select * from books where rental_price> 7;
+
+-- Insight- There are only 7 books whose price is above 7 USD
+```
+
+
+Task 12: Retrieve the List of Books Not Yet Returned
+
+```sql
+select i.*, rs.return_id, rs.return_date from issued_status i
+left join return_status rs on i.issued_id = rs.issued_id where rs.return_date is null;
+
+-- Insight - There are 20 books that were issued yet not returned.
+```
+
+## Adding new records in the issued_status column 
+
+```sql
+
+INSERT INTO issued_status(issued_id, issued_member_id, issued_book_name, issued_date, issued_book_isbn, issued_emp_id)
+VALUES
+('IS151', 'C118', 'The Catcher in the Rye',( to_date('2024-08-23','YYYY-MM-DD') - INTERVAL '24 days'),  '978-0-553-29698-2', 'E108'),
+('IS152', 'C119', 'The Catcher in the Rye', (to_date('2024-08-23','YYYY-MM-DD') - INTERVAL '13 days'),  '978-0-553-29698-2', 'E109'),
+('IS153', 'C106', 'Pride and Prejudice', (to_date('2024-08-23','YYYY-MM-DD') - INTERVAL '7 days'),  '978-0-14-143951-8', 'E107'),
+('IS154', 'C105', 'The Road', (to_date('2024-08-23','YYYY-MM-DD') - INTERVAL '32 days'),  '978-0-375-50167-0', 'E101');
+
+
+
+select * from issued_status;
+```
+
