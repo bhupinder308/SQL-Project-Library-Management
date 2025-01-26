@@ -1,4 +1,4 @@
-
+![Lib Image](https://github.com/bhupinder308/SQL-Project-Library-Management/blob/main/istockphoto-949118068-2048x2048.jpg)
 # Library Management System 📚
 
 The Library Management System is a SQL-based project designed to streamline and manage library operations efficiently. The system organizes and tracks essential data related to library branches, books, employees, book issuance, and returns.
