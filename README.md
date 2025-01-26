@@ -130,3 +130,32 @@ select * from members;
 update members set member_address='125 Main St' where member_id='C101'; -- Address updated to "125 Main St"
 ```
 
+Task 3
+Delete a Record from the Issued Status Table.
+Objective: Delete the record with issued_id = 'IS121' from the issued_status table
+
+```sql
+delete from issued_status where issued_id = 'IS121';
+
+select * from issued_status where issued_id = 'IS121';-- Record successfully deleted.
+```
+
+Task 4
+Retrieve All Books Issued by a Specific Employee
+Objective: Select all books issued by the employee with emp_id = 'E101'.
+
+```sql
+select issued_emp_id,issued_book_name from issued_status where issued_emp_id='E101';
+-- Insight- Only 2 books were issued by 'E101', books name are "Moby Dick" and "To Kill a Mockingbird"
+```
+
+Task 5
+List emp_id Who Have Issued More Than One Book
+Objective: Use GROUP BY to find emp_id who have issued more than one book.
+
+```sql
+select issued_emp_id, count(*) as no_of_books_issued from issued_status 
+	group by issued_emp_id having count(*)>1 order by count(*) desc;
+
+-- Insight - There are 9 employees who have issued more then 1 book.
+```
